@@ -1,0 +1,7 @@
+.classpath
+.project
+bin/*
+gen/*
+tests/bin/*
+tests/gen/*
+build
