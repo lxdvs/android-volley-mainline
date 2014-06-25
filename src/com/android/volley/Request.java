@@ -30,6 +30,8 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
+
 /**
  * Base class for all network requests.
  *
@@ -585,5 +587,9 @@ public abstract class Request<T> implements Comparable<Request<T>> {
         String trafficStatsTag = "0x" + Integer.toHexString(getTrafficStatsTag());
         return (mCanceled ? "[X] " : "[ ] ") + getUrl() + " " + trafficStatsTag + " "
                 + getPriority() + " " + mSequence;
+    }
+    
+    public HttpEntity getEntity() {
+    	return null;
     }
 }
