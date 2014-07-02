@@ -16,6 +16,13 @@
 
 package com.android.volley;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Collections;
+import java.util.Map;
+
+import org.apache.http.HttpEntity;
+
 import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Handler;
@@ -24,13 +31,6 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.android.volley.VolleyLog.MarkerLog;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Collections;
-import java.util.Map;
-
-import org.apache.http.HttpEntity;
 
 /**
  * Base class for all network requests.
@@ -321,6 +321,8 @@ public abstract class Request<T> implements Comparable<Request<T>> {
         return mCanceled;
     }
 
+    private Map<String, String> mHeaders = Collections.emptyMap();
+    
     /**
      * Returns a list of extra HTTP headers to go along with this request. Can
      * throw {@link AuthFailureError} as authentication may be required to
@@ -328,7 +330,11 @@ public abstract class Request<T> implements Comparable<Request<T>> {
      * @throws AuthFailureError In the event of auth failure
      */
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return Collections.emptyMap();
+        return mHeaders;
+    }
+    
+    public void setHeaders(Map<String, String> headers){
+        mHeaders = headers;
     }
 
     /**

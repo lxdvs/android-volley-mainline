@@ -15,6 +15,9 @@
  */
 package com.android.volley.toolbox;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Handler;
@@ -26,10 +29,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
-
-import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * Helper that handles loading and caching images from remote URLs.
@@ -43,8 +42,10 @@ import java.util.LinkedList;
 public class ImageLoader {
     /** RequestQueue for dispatching ImageRequests onto. */
     private final RequestQueue mRequestQueue;
+    
+    private Strap mHeaders;
 
-    /** Amount of time to wait after first response arrives before delivering all responses. */
+	/** Amount of time to wait after first response arrives before delivering all responses. */
     private int mBatchResponseDelayMs = 100;
 
     /** The cache implementation to be used as an L1 cache before calling into volley. */
@@ -229,6 +230,8 @@ public class ImageLoader {
                     onGetImageError(cacheKey, error);
                 }
             });
+        
+        newRequest.setHeaders(mHeaders);
 
         mRequestQueue.add(newRequest);
         mInFlightRequests.put(cacheKey,
@@ -477,4 +480,8 @@ public class ImageLoader {
         return new StringBuilder(url.length() + 12).append("#W").append(maxWidth)
                 .append("#H").append(maxHeight).append(url).toString();
     }
+
+	public void setHeaders(Strap mHeaders) {
+		this.mHeaders = mHeaders;
+	}
 }
