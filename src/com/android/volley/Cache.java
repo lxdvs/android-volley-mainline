@@ -92,6 +92,8 @@ public interface Cache {
         public boolean refreshNeeded() {
             return this.softTtl < System.currentTimeMillis();
         }
+        
+        public void setTTL(long softTTL) { this.ttl = softTTL; };
     }
 
 }
