@@ -82,14 +82,6 @@ public class JacksonRequest< T extends JacksonRequest > extends Request< T > {
         return Method.GET;
     }
 
-    /**
-     * Milliseconds to live in cache
-     * 
-     * @return
-     */
-    public long getTTL() {
-        return 0;
-    }
 
     public void setPostParams(Properties props) {
         mPostFields = props;
@@ -130,6 +122,9 @@ public class JacksonRequest< T extends JacksonRequest > extends Request< T > {
                 }
             }
             Entry entry = HttpHeaderParser.parseCacheHeaders(response);
+            if (entry != null) {
+            	entry.setTTL(Long.MAX_VALUE);
+            }
             return Response.success((T) this, entry);
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
