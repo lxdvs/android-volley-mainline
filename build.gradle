@@ -3,15 +3,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.8.+'
+        classpath 'com.android.tools.build:gradle:1.0.0'
     }
 }
-
 apply plugin: 'android-library'
-
 android {
     compileSdkVersion 19
-    buildToolsVersion = 19
+    buildToolsVersion = '21.1.2'
 
     sourceSets {
         defaultConfig {
@@ -19,12 +17,12 @@ android {
         }
 
         main {
-            assets.srcDirs       = ['assets']
-            res.srcDirs          = ['res']
-            aidl.srcDirs         = ['src']
-            resources.srcDirs    = ['src']
+            assets.srcDirs = ['assets']
+            res.srcDirs = ['res']
+            aidl.srcDirs = ['src']
+            resources.srcDirs = ['src']
             renderscript.srcDirs = ['src']
-            java.srcDirs         = ['src']
+            java.srcDirs = ['src']
             manifest.srcFile 'AndroidManifest.xml'
 
         }
@@ -32,4 +30,10 @@ android {
         instrumentTest.setRoot('tests')
         instrumentTest.java.srcDirs = ['tests/src']
     }
+}
+
+dependencies {
+    compile files('libs/jackson-annotations-2.2.2.jar')
+    compile files('libs/jackson-core-2.2.2.jar')
+    compile files('libs/jackson-databind-2.2.2.jar')
 }
