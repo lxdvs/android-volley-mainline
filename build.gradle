@@ -9,18 +9,9 @@ buildscript {
 
 apply plugin: 'com.android.library'
 
-repositories {
-    mavenCentral()
-}
-dependencies {
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.5.0'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.5.0'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.0'
-}
-
 android {
     compileSdkVersion 19
-    buildToolsVersion = 21
+    buildToolsVersion = '21.1.2'
 
     sourceSets {
         defaultConfig {
@@ -28,12 +19,12 @@ android {
         }
 
         main {
-            assets.srcDirs       = ['assets']
-            res.srcDirs          = ['res']
-            aidl.srcDirs         = ['src']
-            resources.srcDirs    = ['src']
+            assets.srcDirs = ['assets']
+            res.srcDirs = ['res']
+            aidl.srcDirs = ['src']
+            resources.srcDirs = ['src']
             renderscript.srcDirs = ['src']
-            java.srcDirs         = ['src']
+            java.srcDirs = ['src']
             manifest.srcFile 'AndroidManifest.xml'
 
         }
@@ -43,3 +34,8 @@ android {
     }
 }
 
+dependencies {
+    compile files('libs/jackson-annotations-2.2.2.jar')
+    compile files('libs/jackson-core-2.2.2.jar')
+    compile files('libs/jackson-databind-2.2.2.jar')
+}

@@ -40,6 +40,7 @@ public class JacksonRequest< T extends JacksonRequest > extends Request< T > {
     private String mJsonPost;
     private boolean mIntermediate;
     private boolean mPrintJson;
+    private String mRawResponse;
 
     /**
      * Make a GET request and return a parsed object from JSON.
@@ -81,14 +82,6 @@ public class JacksonRequest< T extends JacksonRequest > extends Request< T > {
         return Method.GET;
     }
 
-    /**
-     * Milliseconds to live in cache
-     * 
-     * @return
-     */
-    public long getTTL() {
-        return 0;
-    }
 
     public void setPostParams(Properties props) {
         mPostFields = props;
@@ -119,6 +112,7 @@ public class JacksonRequest< T extends JacksonRequest > extends Request< T > {
     protected Response< T > parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(response.data, "utf-8");
+            mRawResponse = json;
             mapper.readerForUpdating(this).withView(((T) this).getClass()).readValue(json);
             if (mPrintJson) {
                 try {
@@ -128,6 +122,9 @@ public class JacksonRequest< T extends JacksonRequest > extends Request< T > {
                 }
             }
             Entry entry = HttpHeaderParser.parseCacheHeaders(response);
+            if (entry != null) {
+            	entry.setTTL(Long.MAX_VALUE);
+            }
             return Response.success((T) this, entry);
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
@@ -181,5 +178,22 @@ public class JacksonRequest< T extends JacksonRequest > extends Request< T > {
 	public void setPrintJson(boolean mPrintJson) {
 		this.mPrintJson = mPrintJson;
 	}
+	
+	public String getRawResponse() {
+		return mRawResponse;
+	}
+	
+	/**
+	 * Dont use this hack; sometimes you have arbitrary keys :(
+	 */
+	public JSONObject getResponseJsonObject() {
+		try {
+			return new JSONObject(mRawResponse);
+		} catch (JSONException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
 
 }
